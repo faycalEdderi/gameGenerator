@@ -1,0 +1,11 @@
+{% extends "base.html" %} 
+{% block content %}
+{% if limit %}
+    <h1>Limite atteinte</h1>
+    <p>
+    Vous avez atteint la limite de {{ limit }} jeux par {{ period }}. Attendez un
+    peu ou supprimez des jeux existants.
+    </p>
+    <a href="{% url 'dashboard' %}">Retour au tableau de bord</a>
+    {% endif %} 
+{% endblock %}
