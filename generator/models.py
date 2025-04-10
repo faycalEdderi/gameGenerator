@@ -11,6 +11,7 @@ class Game(models.Model):
     characters = models.TextField()
     locations = models.TextField()
     created_at = models.DateTimeField(auto_now_add=True)
+    image = models.ImageField(upload_to='game_images/', blank=True, null=True)
 
     def __str__(self):
         return self.title

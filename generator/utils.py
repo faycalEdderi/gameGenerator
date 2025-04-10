@@ -1,6 +1,9 @@
-# generator/utils.py
 import requests
 from django.conf import settings
+from huggingface_hub import InferenceClient
+from django.core.files.base import ContentFile
+from io import BytesIO
+
 
 HUGGINGFACE_API_URL = settings.HUGGINGFACE_API_URL
 headers = {"Authorization": f"Bearer {settings.HUGGINGFACE_API_KEY}"}
@@ -52,3 +55,18 @@ def generate_game(genre, mood, keywords):
         "characters": characters,
         "locations": locations
     }
+
+
+def generate_image(prompt):
+    client = InferenceClient(
+        provider="fal-ai",
+        api_key=settings.HUGGINGFACE_API_KEY
+    )
+    image = client.text_to_image(
+        prompt,
+        model="black-forest-labs/FLUX.1-dev"
+    )
+    buffer = BytesIO()
+    image.save(buffer, format='PNG')
+    image_file = ContentFile(buffer.getvalue(), name="game_image.png")
+    return image_file
