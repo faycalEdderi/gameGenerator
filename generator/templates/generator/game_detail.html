@@ -2,7 +2,9 @@
 {% block content %}
     <h1>{{ game.title }}</h1>
     {% if game.image %}
-        <img src="{{ game.image.url }}" alt="Image du jeu" style="max-width: 300px;">
+    <div class="image-container">
+        <img src="{{ game.image.url }}" alt="Image du jeu" class="game-image">
+    </div>
     {% endif %}
     <p><strong>Genre :</strong> {{ game.genre }}</p>
     <p><strong>Ambiance :</strong> {{ game.mood }}</p>

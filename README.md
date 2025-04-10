@@ -1,4 +1,8 @@
+
 # Game Scenario Generator
+
+![Website Screenshot](static/images/website_screenshot.png)
+
 
 ## Description
 This project is a Django-based application designed to generate game scenarios. It leverages the power of Django and MySQL to provide a robust and scalable solution for creating dynamic game scenarios.
@@ -14,26 +18,28 @@ This project is a Django-based application designed to generate game scenarios. 
 - MySQL
 
 ## Installation
-
 1. Clone the repository:
     ```bash
     git clone <repository-url>
     cd gameGenerator
     ```
-*** Fast auto install (optional) ***
-    On linux or Mac you can do :
-    ```
-        chmod +x setup_unix.sh
-        ./setup_unix.sh
-    ```
 
-    On windows you can double click on **setup_win.bat** or execut on a cmd line :
+### **Fast Auto Install (optional)**
 
-    ``` 
-    cd \Your\folder\path\gameGenerator
-    setup_win.bat
-    ```
-*** Manual Install ***
+On **Linux or macOS**, you can do the following:
+
+```bash
+chmod +x setup_unix.sh
+./setup_unix.sh
+```
+
+On **Windows**, you can either double-click on **`setup_win.bat`** or run it in a **Command Prompt**:
+
+```cmd
+cd \Your\folder\path\gameGenerator
+setup_win.bat
+```
+
 2. Create a virtual environment and activate it:
     ```bash
     python -m venv venv
@@ -48,15 +54,14 @@ This project is a Django-based application designed to generate game scenarios. 
 4. Configure the `.env` file:
     Create a `.env` file in the root directory with the following structure:
     ```
-        HUGGINGFACE_API_KEY=
-        DB_PASSWORD=
-        DB_USER=
-        DB_HOST=
-        DB_PORT=
-        DB_NAME=
-        HUGGINGFACE_API_URL=
+    HUGGINGFACE_API_KEY=
+    DB_PASSWORD=
+    DB_USER=
+    DB_HOST=
+    DB_PORT=
+    DB_NAME=
+    HUGGINGFACE_API_URL=
     ```
-
 
 5. Apply migrations:
     ```bash
@@ -78,7 +83,6 @@ This project is currently in the testing phase. Feel free to explore and provide
 ## Technologies Used
 - **Django**: High-level Python web framework.
 - **MySQL**: Relational database management system.
-
 
 ## License
 This project is licensed under the MIT License.
