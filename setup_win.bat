@@ -1,7 +1,10 @@
 @echo off
-pip install venv
+
+REM Crée un environnement virtuel
 python -m venv GameGenerator
-source ./
+call GameGenerator\Scripts\activate
+
+REM Crée un fichier .env avec des variables vides
 (
   echo HUGGINGFACE_API_KEY=
   echo DB_PASSWORD=
@@ -12,5 +15,7 @@ source ./
   echo HUGGINGFACE_API_URL=
   echo SECRET_KEY=
   echo DEBUG=
-) > %~dp0.env
+) > .env
+
+REM Installe les dépendances
 pip install -r requirements.txt

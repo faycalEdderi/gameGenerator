@@ -15,6 +15,15 @@ This project is a Django-based application designed to generate game scenarios. 
 
 ## Installation
 
+0. Fast auto install (optional)
+    On linux or Mac you can do 
+    ```
+        chmod +x setup_unix.sh
+        ./setup_unix.sh
+    ```
+
+    On windows you can double click on setup_win.bat
+
 1. Clone the repository:
     ```bash
     git clone <repository-url>
@@ -43,6 +52,7 @@ This project is a Django-based application designed to generate game scenarios. 
         DB_NAME=
         HUGGINGFACE_API_URL=
     ```
+
 
 5. Apply migrations:
     ```bash
