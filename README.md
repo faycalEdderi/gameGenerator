@@ -15,21 +15,25 @@ This project is a Django-based application designed to generate game scenarios. 
 
 ## Installation
 
-0. Fast auto install (optional)
-    On linux or Mac you can do 
-    ```
-        chmod +x setup_unix.sh
-        ./setup_unix.sh
-    ```
-
-    On windows you can double click on setup_win.bat
-
 1. Clone the repository:
     ```bash
     git clone <repository-url>
     cd gameGenerator
     ```
+*** Fast auto install (optional) ***
+    On linux or Mac you can do :
+    ```
+        chmod +x setup_unix.sh
+        ./setup_unix.sh
+    ```
 
+    On windows you can double click on **setup_win.bat** or execut on a cmd line :
+
+    ``` 
+    cd \Your\folder\path\gameGenerator
+    setup_win.bat
+    ```
+*** Manual Install ***
 2. Create a virtual environment and activate it:
     ```bash
     python -m venv venv
