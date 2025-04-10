@@ -2,7 +2,7 @@ from django.shortcuts import render, redirect
 
 from django.contrib.auth.decorators import login_required
 from .forms import GameForm
-from .utils import generate_game
+from .utils import generate_game, generate_image
 from .models import Game
 from django.utils import timezone
 from datetime import timedelta
@@ -32,11 +32,16 @@ def create_game(request):
             "limit": 5,
             "period": "heure"
         })
+
     if request.method == "POST":
         form = GameForm(request.POST)
         if form.is_valid():
             data = form.cleaned_data
             game_data = generate_game(data["genre"], data["mood"], data["keywords"])
+            
+            # Génère l’image basée sur les mots-clés
+            image_prompt = f"A {data['genre']} game with {data['mood']} ambiance featuring {data['keywords']}"
+            image_file = generate_image(image_prompt)
             game = Game.objects.create(
                 user=request.user,
                 title=f"Jeu {data['genre']} - {data['mood']}",
@@ -45,7 +50,8 @@ def create_game(request):
                 keywords=data["keywords"],
                 story=game_data["story"],
                 characters=game_data["characters"],
-                locations=game_data["locations"]
+                locations=game_data["locations"],
+                image=image_file
             )
             return redirect("game_detail", game_id=game.id)
     else:
