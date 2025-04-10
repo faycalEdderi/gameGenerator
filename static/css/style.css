@@ -114,7 +114,7 @@ body::before {
     left: 0;
     width: 100%;
     height: 100%;
-    background: url('data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAQAAAAECAYAAACp8Z5+AAAAG0lEQVQYV2NkYGD4z8DAwMgABXAGNgYGBgYAEAYAA/6Q8AAAAAElFTkSuQmCC') repeat; 
-    opacity: 0.05; 
+    background: url('/static/images/noise.png') repeat;
+    opacity: 0.25;
     pointer-events: none;
 }
