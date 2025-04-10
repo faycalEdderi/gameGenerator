@@ -1,0 +1,14 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Générateur de Jeux</title>
+</head>
+<body>
+    <nav>
+        <a href="{% url 'dashboard' %}">Tableau de bord</a>
+        <a href="{% url 'create_game' %}">Créer un jeu</a>
+        <a href="{% url 'logout' %}">Déconnexion</a>
+    </nav>
+    {% block content %}{% endblock %}
+</body>
+</html>

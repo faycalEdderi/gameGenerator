@@ -1,0 +1,10 @@
+{% extends "base.html" %}
+{% block content %}
+    <h1>{{ game.title }}</h1>
+    <p><strong>Genre :</strong> {{ game.genre }}</p>
+    <p><strong>Ambiance :</strong> {{ game.mood }}</p>
+    <p><strong>Mots-clés :</strong> {{ game.keywords }}</p>
+    <p><strong>Histoire :</strong> {{ game.story }}</p>
+    <p><strong>Personnages :</strong> {{ game.characters }}</p>
+    <p><strong>Lieux :</strong> {{ game.locations }}</p>
+{% endblock %}

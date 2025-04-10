@@ -1,0 +1,11 @@
+{% extends "base.html" %}
+{% block content %}
+    <h1>Mes jeux</h1>
+    <ul>
+        {% for game in games %}
+            <li><a href="{% url 'game_detail' game.id %}">{{ game.title }}</a></li>
+        {% empty %}
+            <li>Aucun jeu créé.</li>
+        {% endfor %}
+    </ul>
+{% endblock %}
