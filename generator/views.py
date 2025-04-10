@@ -10,7 +10,7 @@ from datetime import timedelta
 """
 Handles the creation of a new game for the logged-in user.
 
-This view allows users to create a game by filling out a form. It enforces a limit
+This view allows users to create a game by filling out a form. An image is also generated using AI. It enforces a limit
 of 5 games per hour per user. If the limit is reached, the user is redirected to a
 page informing them of the restriction. Otherwise, the form is displayed, and upon
 submission, the game is generated and saved to the database.

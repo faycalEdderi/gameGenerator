@@ -143,7 +143,7 @@ STATIC_ROOT = BASE_DIR / "staticfiles"
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 
 LOGIN_REDIRECT_URL = 'dashboard' 
-LOGOUT_REDIRECT_URL = 'login'    
+LOGOUT_REDIRECT_URL = 'login'
 
 HUGGINGFACE_API_KEY = config('HUGGINGFACE_API_KEY')
 HUGGINGFACE_API_URL = config('HUGGINGFACE_API_URL')

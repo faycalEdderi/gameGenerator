@@ -16,7 +16,7 @@ def generate_text(prompt, max_length=100):
             "temperature": 0.7,
             "top_k": 50,
             "do_sample": True,
-            "return_full_text": False  # Ne renvoie pas le prompt dans le résultat
+            "return_full_text": False
         }
     }
     try:
