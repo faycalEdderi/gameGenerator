@@ -7,7 +7,16 @@
     <nav>
         <a href="{% url 'dashboard' %}">Tableau de bord</a>
         <a href="{% url 'create_game' %}">Créer un jeu</a>
-        <a href="{% url 'logout' %}">Déconnexion</a>
+        {% if user.is_authenticated %}
+            <form method="post" action="{% url 'logout' %}" style="display:inline;">
+                {% csrf_token %}
+                <button type="submit">Déconnexion</button>
+            </form>
+            <span>Bonjour, {{ user.username }}</span>
+        {% else %}
+            <a href="{% url 'login' %}">Connexion</a>
+            <a href="{% url 'register' %}">Inscription</a>
+        {% endif %}
     </nav>
     {% block content %}{% endblock %}
 </body>
