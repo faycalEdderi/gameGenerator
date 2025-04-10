@@ -1,28 +1,49 @@
-from transformers import pipeline
+# generator/utils.py
+import requests
+from django.conf import settings
 
-generator = pipeline("text-generation", model="gpt2", device=0)
+HUGGINGFACE_API_URL = settings.HUGGINGFACE_API_URL
+headers = {"Authorization": f"Bearer {settings.HUGGINGFACE_API_KEY}"}
 
 def generate_text(prompt, max_length=100):
+    payload = {
+        "inputs": prompt,
+        "parameters": {
+            "max_length": max_length,
+            "temperature": 0.7,
+            "top_k": 50,
+            "do_sample": True,
+            "return_full_text": False  # Ne renvoie pas le prompt dans le résultat
+        }
+    }
     try:
-        result = generator(prompt, max_length=max_length, temperature=0.7, top_k=50, num_return_sequences=1)
-        generated_text = result[0]["generated_text"]
-        cleaned_text = generated_text.replace(prompt, "").strip()
-        return cleaned_text if cleaned_text else generated_text 
+        response = requests.post(HUGGINGFACE_API_URL, headers=headers, json=payload)
+        if response.status_code == 200:
+            result = response.json()
+            if isinstance(result, list) and "generated_text" in result[0]:
+                generated_text = result[0]["generated_text"].strip()
+                return generated_text if generated_text else "No text generated"
+            else:
+                print(f"Unexpected response: {result}")
+                return "Text generation failed"
+        else:
+            print(f"API error: {response.status_code} - {response.text}")
+            return "API request failed"
     except Exception as e:
-        print(f"Erreur : {e}")
-        return "Texte non généré"
+        print(f"Error: {e}")
+        return "Text generation error"
 
 def generate_game(genre, mood, keywords):
-    universe_prompt = f"Décris un univers de jeu {genre} {mood} avec des graphismes rétro et des situations absurdes liées à '{keywords}'."
+    universe_prompt = f"Describe a {genre} game universe with a {mood} vibe, featuring retro graphics and absurd situations tied to '{keywords}'."
     universe = generate_text(universe_prompt, 50)
 
-    story_prompt = f"Raconte une histoire en 3 actes pour un jeu {genre} {mood} : Acte 1 - introduction d’un héros loufoque, Acte 2 - un problème hilarant, Acte 3 - une résolution inattendue, avec '{keywords}'."
+    story_prompt = f"Tell a 3-act story for a {genre} {mood} game: Act 1 - introduce a quirky hero, Act 2 - present a hilarious problem, Act 3 - resolve it unexpectedly, using '{keywords}'."
     story = generate_text(story_prompt, 150)
 
-    char_prompt = f"Invente deux personnages pour un jeu {genre} {mood} : donne leur nom, un rôle comique (ex. héros maladroit, méchant ridicule), et une motivation absurde, liés à '{keywords}'."
+    char_prompt = f"Create two characters for a {genre} {mood} game: give their names, comic roles (e.g., clumsy hero, silly villain), and absurd motivations, linked to '{keywords}'."
     characters = generate_text(char_prompt, 100)
 
-    location_prompt = f"Décris un lieu emblématique et {mood} pour un jeu {genre}, avec des détails visuels rétro et un lien à '{keywords}'."
+    location_prompt = f"Describe an iconic {mood} location for a {genre} game, with retro visuals and a connection to '{keywords}'."
     locations = generate_text(location_prompt, 50)
 
     return {

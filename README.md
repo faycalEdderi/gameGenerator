@@ -41,7 +41,7 @@ This project is a Django-based application designed to generate game scenarios. 
         DB_HOST=
         DB_PORT=
         DB_NAME=
-        API_URL=
+        HUGGINGFACE_API_URL=
     ```
 
 5. Apply migrations:
@@ -64,16 +64,6 @@ This project is currently in the testing phase. Feel free to explore and provide
 ## Technologies Used
 - **Django**: High-level Python web framework.
 - **MySQL**: Relational database management system.
-
-⚠️ **Warning**: Currently, the application uses a local GPT-2 model to avoid token restrictions.  
-However, the GPT-2 model is not performant enough to generate high-quality game scenarios.  
-
-To address this, the following constants have been added to facilitate the integration of a Hugging Face API via an `.env` file and its usage in the code:
-
-- `HUGGINGFACE_API_KEY`: Your Hugging Face API key.
-- `API_URL`: The endpoint URL for the Hugging Face model.
-
-This enhancement will allow the application to leverage more advanced models for generating game scenarios.
 
 
 ## License

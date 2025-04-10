@@ -145,8 +145,5 @@ DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 LOGIN_REDIRECT_URL = 'dashboard' 
 LOGOUT_REDIRECT_URL = 'login'    
 
-# Actuellement j'utilise un gpt2 en local pour eviter la restriction de token
-# Mais le modele gpt2 n'est pas assez performant pour générer des scenarios de jeux
-# Les constantes ci-dessous pemetterons d'integrer rapidement une api hugging face via un fichier env et utiliser dans le code
 HUGGINGFACE_API_KEY = config('HUGGINGFACE_API_KEY')
-API_URL = config('API_URL')
+HUGGINGFACE_API_URL = config('HUGGINGFACE_API_URL')
