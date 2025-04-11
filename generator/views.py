@@ -6,10 +6,8 @@ from .utils import generate_game, generate_image
 from .models import Game
 from django.utils import timezone
 from datetime import timedelta
-import os
-from django.conf import settings
 import random
-from django.http import HttpResponse
+from .models import Word
 
 """
 Handles the creation of a new game for the logged-in user.
@@ -40,7 +38,6 @@ def create_game(request):
     if request.method == "POST":
         if 'random_fill' in request.POST:
             initial_data = random_game()
-            print(initial_data)
             form = GameForm(initial=initial_data)
             return render(request, "generator/create_game.html", {"form": form})
         else:
@@ -98,38 +95,29 @@ def dashboard(request):
     games = Game.objects.filter(user=request.user)
     return render(request, "generator/dashboard.html", {"games": games})
 
-
 def random_game():
-    """Génère des mots aléatoires pour pré-remplir le formulaire de jeu."""
-    # Chemin vers le fichier de mots
-    words_file = os.path.join(settings.STATICFILES_DIRS[0], 'words.txt')
-
-    genres, moods, keywords = [], [], []
-    current_section = None
+    """Génère des mots aléatoires à partir de la base de données."""
     try:
-        with open(words_file, 'r') as f:
-            for line in f:
-                line = line.strip()
-                if line == '[genres]':
-                    current_section = genres
-                elif line == '[moods]':
-                    current_section = moods
-                elif line == '[keywords]':
-                    current_section = keywords
-                elif line and current_section is not None:
-                    current_section.append(line)
-    except Exception as e:
-        print(f"Error reading words file: {e}")
-        genres = ['adventure', 'puzzle'] 
-        moods = ['happy', 'dark']
-        keywords = ['cat', 'forest', 'star']
-        
-    random_genre = random.choice(genres)
-    random_mood = random.choice(moods)
-    random_keywords = ', '.join(random.sample(keywords, 3))
+        genres = list(Word.objects.filter(category='genre'))
+        moods = list(Word.objects.filter(category='mood'))
+        keywords = list(Word.objects.filter(category='keyword'))
 
-    return {
-        'genre': random_genre,
-        'mood': random_mood,
-        'keywords': random_keywords
-    }
+        if not genres or not moods or not keywords:
+            raise ValueError("Pas assez de mots dans une ou plusieurs catégories")
+
+        random_genre = random.choice(genres).word
+        random_mood = random.choice(moods).word
+        random_keywords = ', '.join(word.word for word in random.sample(keywords, min(3, len(keywords))))
+        
+        return {
+            'genre': random_genre,
+            'mood': random_mood,
+            'keywords': random_keywords
+        }
+    except Exception as e:
+        print(f"Error generating random game data: {e}")
+        return {
+            'genre': 'adventure',
+            'mood': 'happy',
+            'keywords': 'cat, forest, star'
+        }
