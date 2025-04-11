@@ -67,6 +67,12 @@ setup_win.bat
     ```bash
     python manage.py migrate
     ```
+## Populate BDD
+
+1. You can populate part of the DB by using the script:
+    ```bash
+    python populateWords.py
+    ```
 
 ## Running the Application in Development Mode
 

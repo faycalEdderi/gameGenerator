@@ -15,3 +15,16 @@ class Game(models.Model):
 
     def __str__(self):
         return self.title
+    
+    
+class Word(models.Model):
+    CATEGORY_CHOICES = [
+        ('genre', 'Genre'),
+        ('mood', 'Mood'),
+        ('keyword', 'Keyword'),
+    ]
+    category = models.CharField(max_length=20, choices=CATEGORY_CHOICES)
+    word = models.CharField(max_length=50, unique=True)
+
+    def __str__(self):
+        return f"{self.word} ({self.category})"
