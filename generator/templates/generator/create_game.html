@@ -6,4 +6,8 @@
     {{ form.as_p }}
     <button type="submit">Générer</button>
     </form>
+    <form method="post">
+        {% csrf_token %}
+        <button type="submit" name="random_fill">Remplir aléatoirement</button>
+    </form>
 {% endblock %}

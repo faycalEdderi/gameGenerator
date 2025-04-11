@@ -6,6 +6,10 @@ from .utils import generate_game, generate_image
 from .models import Game
 from django.utils import timezone
 from datetime import timedelta
+import os
+from django.conf import settings
+import random
+from django.http import HttpResponse
 
 """
 Handles the creation of a new game for the logged-in user.
@@ -34,26 +38,32 @@ def create_game(request):
         })
 
     if request.method == "POST":
-        form = GameForm(request.POST)
-        if form.is_valid():
-            data = form.cleaned_data
-            game_data = generate_game(data["genre"], data["mood"], data["keywords"])
-            
-            # Génère l’image basée sur les mots-clés
-            image_prompt = f"A {data['genre']} game with {data['mood']} ambiance featuring {data['keywords']}"
-            image_file = generate_image(image_prompt)
-            game = Game.objects.create(
-                user=request.user,
-                title=f"Jeu {data['genre']} - {data['mood']}",
-                genre=data["genre"],
-                mood=data["mood"],
-                keywords=data["keywords"],
-                story=game_data["story"],
-                characters=game_data["characters"],
-                locations=game_data["locations"],
-                image=image_file
-            )
-            return redirect("game_detail", game_id=game.id)
+        if 'random_fill' in request.POST:
+            initial_data = random_game()
+            print(initial_data)
+            form = GameForm(initial=initial_data)
+            return render(request, "generator/create_game.html", {"form": form})
+        else:
+            form = GameForm(request.POST)
+            if form.is_valid():
+                data = form.cleaned_data
+                game_data = generate_game(data["genre"], data["mood"], data["keywords"])
+                
+                # Génère l’image basée sur les mots-clés
+                image_prompt = f"A {data['genre']} game with {data['mood']} ambiance featuring {data['keywords']}"
+                image_file = generate_image(image_prompt)
+                game = Game.objects.create(
+                    user=request.user,
+                    title=f"Jeu {data['genre']} - {data['mood']}",
+                    genre=data["genre"],
+                    mood=data["mood"],
+                    keywords=data["keywords"],
+                    story=game_data["story"],
+                    characters=game_data["characters"],
+                    locations=game_data["locations"],
+                    image=image_file
+                )
+                return redirect("game_detail", game_id=game.id)
     else:
         form = GameForm()
     return render(request, "generator/create_game.html", {"form": form})
@@ -87,3 +97,39 @@ Returns:
 def dashboard(request):
     games = Game.objects.filter(user=request.user)
     return render(request, "generator/dashboard.html", {"games": games})
+
+
+def random_game():
+    """Génère des mots aléatoires pour pré-remplir le formulaire de jeu."""
+    # Chemin vers le fichier de mots
+    words_file = os.path.join(settings.STATICFILES_DIRS[0], 'words.txt')
+
+    genres, moods, keywords = [], [], []
+    current_section = None
+    try:
+        with open(words_file, 'r') as f:
+            for line in f:
+                line = line.strip()
+                if line == '[genres]':
+                    current_section = genres
+                elif line == '[moods]':
+                    current_section = moods
+                elif line == '[keywords]':
+                    current_section = keywords
+                elif line and current_section is not None:
+                    current_section.append(line)
+    except Exception as e:
+        print(f"Error reading words file: {e}")
+        genres = ['adventure', 'puzzle'] 
+        moods = ['happy', 'dark']
+        keywords = ['cat', 'forest', 'star']
+        
+    random_genre = random.choice(genres)
+    random_mood = random.choice(moods)
+    random_keywords = ', '.join(random.sample(keywords, 3))
+
+    return {
+        'genre': random_genre,
+        'mood': random_mood,
+        'keywords': random_keywords
+    }
